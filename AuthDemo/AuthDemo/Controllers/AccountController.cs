@@ -28,7 +28,19 @@ namespace AuthDemo.Controllers
                 return View();
             }
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
 
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            if (user.Role == "Admin") return RedirectToAction("Admin", "Dashboard");
+            else return RedirectToAction("User", "Dashboard");
         }
     }
 }
