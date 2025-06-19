@@ -42,6 +42,12 @@ namespace AuthDemo.Controllers
             if (user.Role == "Admin") return RedirectToAction("Admin", "Dashboard");
             else return RedirectToAction("User", "Dashboard");
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
+        }
     }
 }
 
